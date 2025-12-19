@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '../services/api'
 import { TableType } from '../types'
 import UserTable from '../components/UserTable'
+import UserEditForm from '../components/UserEditForm'
 // Simple arrow icon component
 const ArrowLeft = ({ className }: { className?: string }) => (
   <svg
@@ -30,10 +31,12 @@ const TABLE_CONFIGS: Record<TableType, { name: string; editable: boolean }> = {
   storico: { name: 'Storico vino', editable: false },
 }
 
+type TabType = TableType | 'user'
+
 export default function UserDetail() {
   const { userId } = useParams<{ userId: string }>()
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<TableType>('inventario')
+  const [activeTab, setActiveTab] = useState<TabType>('user')
 
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ['user', userId],
@@ -58,7 +61,7 @@ export default function UserDetail() {
     )
   }
 
-  const tableName = TABLE_CONFIGS[activeTab].name
+  const tableName = activeTab !== 'user' ? TABLE_CONFIGS[activeTab as TableType].name : ''
 
   return (
     <div className="space-y-6">
@@ -124,6 +127,21 @@ export default function UserDetail() {
       <div className="bg-white rounded-lg shadow">
         <div className="border-b border-gray-200">
           <nav className="flex -mb-px">
+            {/* Tab Dati Utente */}
+            <button
+              onClick={() => setActiveTab('user')}
+              className={`
+                px-6 py-3 text-sm font-medium border-b-2 transition
+                ${
+                  activeTab === 'user'
+                    ? 'border-primary-500 text-primary-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }
+              `}
+            >
+              Dati Utente
+            </button>
+            {/* Tab Tabelle */}
             {Object.entries(TABLE_CONFIGS).map(([key, config]) => (
               <button
                 key={key}
@@ -143,14 +161,18 @@ export default function UserDetail() {
           </nav>
         </div>
 
-        {/* Table Content */}
+        {/* Content */}
         <div className="p-6">
-          <UserTable
-            userId={Number(userId!)}
-            tableName={tableName}
-            tableType={activeTab}
-            editable={TABLE_CONFIGS[activeTab].editable}
-          />
+          {activeTab === 'user' ? (
+            <UserEditForm user={user} userId={Number(userId!)} />
+          ) : (
+            <UserTable
+              userId={Number(userId!)}
+              tableName={tableName}
+              tableType={activeTab as TableType}
+              editable={TABLE_CONFIGS[activeTab as TableType].editable}
+            />
+          )}
         </div>
       </div>
     </div>
