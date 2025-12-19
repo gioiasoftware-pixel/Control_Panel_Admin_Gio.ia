@@ -23,20 +23,21 @@ function App() {
   const { isAuthenticated } = useAuthStore()
 
   return (
-    <BrowserRouter>
-      <Toaster position="top-right" />
-      <Routes>
-        <Route path="/admin/login" element={
-          isAuthenticated ? <Navigate to="/admin/dashboard" replace /> : <Login />
-        } />
-        <Route path="/admin" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="users/:userId" element={<UserDetail />} />
-          <Route path="users/:userId/edit" element={<UserEdit />} />
-          <Route path="files" element={<FileManager />} />
-        </Route>
-        <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Toaster position="top-right" />
+        <Routes>
+          <Route path="/admin/login" element={
+            isAuthenticated ? <Navigate to="/admin/dashboard" replace /> : <Login />
+          } />
+          <Route path="/admin" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="users/:userId" element={<UserDetail />} />
+            <Route path="users/:userId/edit" element={<UserEdit />} />
+            <Route path="files" element={<FileManager />} />
+          </Route>
+          <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
