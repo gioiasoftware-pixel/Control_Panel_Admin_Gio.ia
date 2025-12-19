@@ -18,15 +18,31 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       adminEmail: null,
       login: async (email: string, password: string) => {
+        // In produzione, usa solo API reale
+        if (import.meta.env.PROD) {
+          const response = await apiClient.login(email, password)
+          const token = response.access_token || response.token
+          
+          if (!token) {
+            throw new Error('Token non ricevuto dal server')
+          }
+          
+          localStorage.setItem('auth_token', token)
+          set({
+            token,
+            isAuthenticated: true,
+            adminEmail: email,
+          })
+          return
+        }
+        
+        // Solo in sviluppo: fallback mock
         try {
-          // Try API login first
           const response = await apiClient.login(email, password)
           const token = response.access_token || response.token
           
           if (token) {
-            // Save token to localStorage for api interceptor
             localStorage.setItem('auth_token', token)
-            
             set({
               token,
               isAuthenticated: true,
@@ -35,7 +51,7 @@ export const useAuthStore = create<AuthState>()(
             return
           }
         } catch (apiError: any) {
-          // Fallback to mock auth if API fails (for development)
+          // Fallback mock solo in sviluppo
           const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'gio.ia.software@gmail.com'
           const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Lagioiadilavorare2025'
           
@@ -51,7 +67,6 @@ export const useAuthStore = create<AuthState>()(
             return
           }
           
-          // Re-throw API error if mock auth also fails
           throw apiError
         }
       },
