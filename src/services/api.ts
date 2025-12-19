@@ -56,12 +56,17 @@ class ApiClient {
   }
 
   // Auth
-  async login(email: string, password: string): Promise<{ token: string }> {
+  async login(email: string, password: string): Promise<{ access_token: string; token?: string }> {
     const response = await this.client.post('/api/auth/login', {
       email,
       password,
     })
-    return response.data
+    // Normalize response: API returns access_token, but we also support token for compatibility
+    const data = response.data
+    if (data.access_token) {
+      return { access_token: data.access_token, token: data.access_token }
+    }
+    return data
   }
 
   // Users
@@ -91,8 +96,8 @@ class ApiClient {
       formData.append('file_type', data.file_type || 'csv')
     }
 
-    // Send to Processor for onboarding
-    const response = await this.processorClient.post('/process-inventory', formData, {
+    // Send to Web App backend which handles user creation and Processor integration
+    const response = await this.client.post('/api/admin/users', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

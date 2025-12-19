@@ -58,7 +58,7 @@ export default function UserDetail() {
     )
   }
 
-  const tableName = `${user.id}/${user.business_name} ${TABLE_CONFIGS[activeTab].name}`
+  const tableName = TABLE_CONFIGS[activeTab].name
 
   return (
     <div className="space-y-6">

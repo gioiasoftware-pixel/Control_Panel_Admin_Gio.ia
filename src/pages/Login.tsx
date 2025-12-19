@@ -22,14 +22,19 @@ export default function Login() {
       // Try API login first
       try {
         const response = await apiClient.login(email, password)
-        setToken(response.token)
-        toast.success('Login effettuato con successo')
-        navigate('/admin/dashboard')
-      } catch (error) {
+        const token = response.access_token || response.token
+        if (token) {
+          setToken(token)
+          toast.success('Login effettuato con successo')
+          navigate('/admin/dashboard')
+          return
+        }
+      } catch (apiError) {
         // Fallback to mock login for development
         await login(email, password)
         toast.success('Login effettuato con successo')
         navigate('/admin/dashboard')
+        return
       }
     } catch (error: any) {
       const errorMessage = error.message || 'Errore durante il login'
