@@ -112,10 +112,20 @@ class ApiClient {
 
   async createUser(data: OnboardingData): Promise<OnboardingResponse> {
     const formData = new FormData()
-    formData.append('username', data.username)
-    formData.append('email', data.email)
-    formData.append('password', data.password)
+    
+    // Solo business_name è obbligatorio
     formData.append('business_name', data.business_name)
+    
+    // Aggiungi campi opzionali solo se forniti
+    if (data.username && data.username.trim() !== '') {
+      formData.append('username', data.username)
+    }
+    if (data.email && data.email.trim() !== '') {
+      formData.append('email', data.email)
+    }
+    if (data.password && data.password.trim() !== '') {
+      formData.append('password', data.password)
+    }
     
     if (data.file) {
       formData.append('file', data.file)
