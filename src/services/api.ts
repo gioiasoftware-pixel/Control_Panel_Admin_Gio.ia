@@ -23,13 +23,8 @@ if (import.meta.env.PROD) {
       'Vedi RAILWAY_ENV_SETUP.md per istruzioni dettagliate.'
     )
   }
-  if (!import.meta.env.VITE_PROCESSOR_URL) {
-    console.warn(
-      '⚠️ VITE_PROCESSOR_URL non configurata! Alcune funzionalità potrebbero non funzionare.\n' +
-      'Configura VITE_PROCESSOR_URL su Railway con l\'URL del Processor.\n' +
-      'Vedi RAILWAY_ENV_SETUP.md per istruzioni dettagliate.'
-    )
-  }
+  // VITE_PROCESSOR_URL non è necessaria - il Control Panel chiama solo il backend Web App
+  // che a sua volta chiama Processor usando la sua PROCESSOR_URL
 }
 
 class ApiClient {
