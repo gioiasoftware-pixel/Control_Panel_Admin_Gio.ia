@@ -19,7 +19,8 @@
     "zustand": "^4.4.7",
     "date-fns": "^2.30.0",
     "react-hot-toast": "^2.4.1",
-    "@tanstack/react-query": "^5.12.2"
+    "@tanstack/react-query": "^5.12.2",
+    "serve": "^14.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
