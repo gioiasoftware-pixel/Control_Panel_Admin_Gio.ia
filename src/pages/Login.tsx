@@ -44,6 +44,11 @@ export default function Login() {
     <div className="login-page">
       <div className="login-container">
         <div className="login-header">
+          <div className="logo-container">
+            <img src="/logo.png" alt="Gio.ia Logo" className="logo" onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none'
+            }} />
+          </div>
           <h1 className="login-title">Gio.ia</h1>
         </div>
 
