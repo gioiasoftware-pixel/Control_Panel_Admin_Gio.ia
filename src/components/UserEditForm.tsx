@@ -26,7 +26,7 @@ export default function UserEditForm({ user, userId }: UserEditFormProps) {
   const [loading, setLoading] = useState(false)
 
   const { mutate: updateUser } = useMutation({
-    mutationFn: (data: Partial<User>) => apiClient.updateUser(userId, data),
+    mutationFn: (data: Record<string, any>) => apiClient.updateUser(userId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', userId] })
       queryClient.invalidateQueries({ queryKey: ['users'] })
@@ -45,7 +45,8 @@ export default function UserEditForm({ user, userId }: UserEditFormProps) {
 
     try {
       // Prepara dati da inviare (solo campi modificati)
-      const updateData: Partial<User> = {}
+      // Usa Record<string, any> per includere password che non è nel tipo User
+      const updateData: Record<string, any> = {}
       
       if (formData.email !== user.email) updateData.email = formData.email
       if (formData.username !== user.username) updateData.username = formData.username
@@ -67,7 +68,7 @@ export default function UserEditForm({ user, userId }: UserEditFormProps) {
       }
 
       if (Object.keys(updateData).length === 0) {
-        toast.info('Nessuna modifica da salvare')
+        toast('Nessuna modifica da salvare', { icon: 'ℹ️' })
         setIsEditing(false)
         setLoading(false)
         return
