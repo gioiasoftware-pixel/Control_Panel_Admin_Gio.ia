@@ -14,6 +14,24 @@ import type {
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 const PROCESSOR_URL = import.meta.env.VITE_PROCESSOR_URL || 'http://localhost:8001'
 
+// Warn if using default URLs in production
+if (import.meta.env.PROD) {
+  if (!import.meta.env.VITE_API_URL) {
+    console.error(
+      '⚠️ VITE_API_URL non configurata! Il Control Panel sta usando localhost:8000 come fallback.\n' +
+      'Configura VITE_API_URL su Railway con l\'URL del backend Web App.\n' +
+      'Vedi RAILWAY_ENV_SETUP.md per istruzioni dettagliate.'
+    )
+  }
+  if (!import.meta.env.VITE_PROCESSOR_URL) {
+    console.warn(
+      '⚠️ VITE_PROCESSOR_URL non configurata! Alcune funzionalità potrebbero non funzionare.\n' +
+      'Configura VITE_PROCESSOR_URL su Railway con l\'URL del Processor.\n' +
+      'Vedi RAILWAY_ENV_SETUP.md per istruzioni dettagliate.'
+    )
+  }
+}
+
 class ApiClient {
   private client: AxiosInstance
   private processorClient: AxiosInstance
@@ -46,6 +64,19 @@ class ApiClient {
     this.client.interceptors.response.use(
       (response) => response,
       (error: AxiosError) => {
+        // Handle connection errors
+        if (error.code === 'ERR_NETWORK' || error.message.includes('ERR_CONNECTION_REFUSED')) {
+          const apiUrl = API_URL
+          console.error(
+            `❌ Errore di connessione al backend: ${apiUrl}\n` +
+            `Verifica che:\n` +
+            `1. VITE_API_URL sia configurata correttamente su Railway\n` +
+            `2. Il backend Web App sia online e raggiungibile\n` +
+            `3. L'URL sia corretto (non localhost in produzione)\n` +
+            `Vedi RAILWAY_ENV_SETUP.md per istruzioni dettagliate.`
+          )
+        }
+        
         if (error.response?.status === 401) {
           localStorage.removeItem('auth_token')
           window.location.href = '/admin/login'

@@ -18,12 +18,16 @@ export default function Sidebar() {
     queryFn: async () => {
       try {
         return await apiClient.getDashboardKPI()
-      } catch (error) {
+      } catch (error: any) {
         // Return mock data if API not available
+        if (error?.code === 'ERR_NETWORK' || error?.message?.includes('ERR_CONNECTION_REFUSED')) {
+          console.warn('⚠️ Impossibile connettersi al backend per KPI. Verifica VITE_API_URL su Railway.')
+        }
         return mockKPI
       }
     },
     refetchInterval: 30000, // Refresh every 30 seconds
+    retry: 2, // Retry 2 times before giving up
   })
 
   return (
