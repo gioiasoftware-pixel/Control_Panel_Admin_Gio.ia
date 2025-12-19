@@ -82,10 +82,10 @@ export interface PaginatedResponse<T> {
 
 // Onboarding Types
 export interface OnboardingData {
-  username: string
-  email: string
-  password: string
-  business_name: string
+  username?: string
+  email?: string
+  password?: string
+  business_name: string  // Solo business_name è obbligatorio
   file?: File
   file_type?: 'csv' | 'excel'
 }

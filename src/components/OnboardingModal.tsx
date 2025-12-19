@@ -22,13 +22,14 @@ export default function OnboardingModal({ onClose, onSubmit }: OnboardingModalPr
     setLoading(true)
 
     try {
-      // Validation
-      if (!formData.username || !formData.email || !formData.password || !formData.business_name) {
-        toast.error('Compila tutti i campi obbligatori')
+      // Validation - solo business_name è obbligatorio
+      if (!formData.business_name || formData.business_name.trim() === '') {
+        toast.error('Il Business Name è obbligatorio')
         return
       }
 
-      if (formData.password.length < 8) {
+      // Se viene fornita una password, deve essere di almeno 8 caratteri
+      if (formData.password && formData.password.length > 0 && formData.password.length < 8) {
         toast.error('La password deve essere di almeno 8 caratteri')
         return
       }
@@ -60,43 +61,43 @@ export default function OnboardingModal({ onClose, onSubmit }: OnboardingModalPr
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Username *
+              Username
             </label>
             <input
               type="text"
-              required
-              value={formData.username}
+              value={formData.username || ''}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="Opzionale"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email *
+              Email
             </label>
             <input
               type="email"
-              required
-              value={formData.email}
+              value={formData.email || ''}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="Opzionale"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password *
+              Password
             </label>
             <input
               type="password"
-              required
               minLength={8}
-              value={formData.password}
+              value={formData.password || ''}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="Opzionale"
             />
-            <p className="mt-1 text-xs text-gray-500">Minimo 8 caratteri</p>
+            <p className="mt-1 text-xs text-gray-500">Opzionale - Minimo 8 caratteri se fornita</p>
           </div>
 
           <div>
