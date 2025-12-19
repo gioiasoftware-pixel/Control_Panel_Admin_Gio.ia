@@ -20,7 +20,7 @@ export default function Dashboard() {
   })
 
   const { mutate: createUser } = useMutation({
-    mutationFn: apiClient.createUser,
+    mutationFn: (data) => apiClient.createUser(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       queryClient.invalidateQueries({ queryKey: ['dashboard-kpi'] })
