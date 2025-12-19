@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { apiClient } from '../services/api'
-import type { OnboardingData } from '../types'
+import type { OnboardingData, OnboardingResponse } from '../types'
 import toast from 'react-hot-toast'
 import UserCard from '../components/UserCard'
 import OnboardingModal from '../components/OnboardingModal'
@@ -20,7 +20,7 @@ export default function Dashboard() {
     queryFn: () => apiClient.getUsers({ page, limit: 12, search }),
   })
 
-  const { mutate: createUser } = useMutation({
+  const { mutate: createUser } = useMutation<OnboardingResponse, Error, OnboardingData>({
     mutationFn: (data: OnboardingData) => apiClient.createUser(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
