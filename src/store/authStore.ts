@@ -17,17 +17,19 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       adminEmail: null,
       login: async (email: string, password: string) => {
-        // TODO: Replace with actual API call
-        // For now, using mock authentication
-        if (email === import.meta.env.VITE_ADMIN_EMAIL && 
-            password === import.meta.env.VITE_ADMIN_PASSWORD) {
+        // Admin credentials (fallback if env vars not set)
+        const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'gio.ia.software@gmail.com'
+        const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Lagioiadilavorare2025'
+        
+        // Validate credentials
+        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
           const mockToken = 'mock-jwt-token-' + Date.now()
           set({
             token: mockToken,
             isAuthenticated: true,
             adminEmail: email,
           })
-          localStorage.setItem('auth_token', mockToken)
+          // persist middleware will handle saving to localStorage
         } else {
           throw new Error('Credenziali non valide')
         }
@@ -38,12 +40,13 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: false,
           adminEmail: null,
         })
-        localStorage.removeItem('auth_token')
+        // persist middleware will handle removing from localStorage
       },
       setToken: (token: string) => {
         set({
           token,
           isAuthenticated: true,
+          adminEmail: import.meta.env.VITE_ADMIN_EMAIL || 'gio.ia.software@gmail.com',
         })
       },
     }),

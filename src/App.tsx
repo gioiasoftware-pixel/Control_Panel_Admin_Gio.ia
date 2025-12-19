@@ -36,8 +36,12 @@ function App() {
             <Route path="users/:userId/edit" element={<UserEdit />} />
             <Route path="files" element={<FileManager />} />
           </Route>
-          <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="/" element={
+            isAuthenticated ? <Navigate to="/admin/dashboard" replace /> : <Navigate to="/admin/login" replace />
+          } />
+          <Route path="*" element={
+            isAuthenticated ? <Navigate to="/admin/dashboard" replace /> : <Navigate to="/admin/login" replace />
+          } />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
