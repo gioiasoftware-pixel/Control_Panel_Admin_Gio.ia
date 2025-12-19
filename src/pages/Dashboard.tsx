@@ -5,6 +5,7 @@ import { apiClient } from '../services/api'
 import toast from 'react-hot-toast'
 import UserCard from '../components/UserCard'
 import OnboardingModal from '../components/OnboardingModal'
+import './Dashboard.css'
 
 export default function Dashboard() {
   const [page, setPage] = useState(1)
@@ -36,45 +37,42 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Gestisci utenti e monitora il sistema
-          </p>
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <div className="dashboard-title-section">
+          <h1>Dashboard Admin</h1>
+          <p>Gestisci utenti e monitora il sistema</p>
         </div>
         <button
           onClick={() => setShowOnboarding(true)}
-          className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition"
+          className="dashboard-button"
         >
           + Nuovo Utente
         </button>
       </div>
 
       {/* Search */}
-      <div className="bg-white p-4 rounded-lg shadow">
+      <div className="dashboard-search">
         <input
           type="text"
           placeholder="Cerca utente per nome, email o business name..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
       </div>
 
       {/* Users Grid */}
       {isLoading ? (
-        <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-          <p className="mt-2 text-gray-500">Caricamento utenti...</p>
+        <div className="dashboard-loading">
+          <div className="dashboard-spinner"></div>
+          <p className="dashboard-loading-text">Caricamento utenti...</p>
         </div>
       ) : usersData?.data.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg shadow">
-          <p className="text-gray-500">Nessun utente trovato</p>
+        <div className="dashboard-empty">
+          <p className="dashboard-empty-text">Nessun utente trovato</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="dashboard-grid">
           {usersData?.data.map((user) => (
             <UserCard
               key={user.id}
@@ -87,21 +85,21 @@ export default function Dashboard() {
 
       {/* Pagination */}
       {usersData && usersData.total > usersData.limit && (
-        <div className="flex justify-center gap-2">
+        <div className="dashboard-pagination">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            className="dashboard-pagination-button"
           >
             Precedente
           </button>
-          <span className="px-4 py-2 text-gray-700">
+          <span className="dashboard-pagination-info">
             Pagina {page} di {Math.ceil(usersData.total / usersData.limit)}
           </span>
           <button
             onClick={() => setPage((p) => p + 1)}
             disabled={page >= Math.ceil(usersData.total / usersData.limit)}
-            className="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            className="dashboard-pagination-button"
           >
             Successiva
           </button>

@@ -7,6 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
+        granaccia: '#9a182e',
+        'off-white': '#fafafa',
+        'light-gray': '#f5f5f5',
+        border: '#e0e0e0',
+        'text-primary': '#1a1a1a',
+        'text-secondary': '#666666',
+        'text-light': '#999999',
+        'sidebar-bg': '#28374a',
+        'sidebar-hover': '#34495e',
+        'sidebar-active': '#f39c12',
         primary: {
           50: '#fef7ed',
           100: '#fdedd3',
