@@ -2,12 +2,9 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { apiClient } from '../services/api'
-import { User } from '../types'
 import toast from 'react-hot-toast'
 import UserCard from '../components/UserCard'
 import OnboardingModal from '../components/OnboardingModal'
-import { format } from 'date-fns'
-import { it } from 'date-fns/locale'
 
 export default function Dashboard() {
   const [page, setPage] = useState(1)

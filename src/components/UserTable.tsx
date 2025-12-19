@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiClient } from '../services/api'
-import { TableRow, TableType } from '../types'
+import { TableRow } from '../types'
 import toast from 'react-hot-toast'
 
 interface UserTableProps {
@@ -14,7 +14,6 @@ interface UserTableProps {
 export default function UserTable({
   userId,
   tableName,
-  tableType,
   editable,
 }: UserTableProps) {
   const [page, setPage] = useState(1)

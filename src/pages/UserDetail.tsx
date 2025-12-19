@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '../services/api'
 import { TableType } from '../types'
-import toast from 'react-hot-toast'
 import UserTable from '../components/UserTable'
 // Simple arrow icon component
 const ArrowLeft = ({ className }: { className?: string }) => (
