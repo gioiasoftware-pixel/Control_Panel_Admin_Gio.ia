@@ -1,0 +1,38 @@
+================================================================================
+COMANDI GIT BASH PER PUSH SU GITHUB
+Repository: https://github.com/gioiasoftware-pixel/Control_Panel_Admin_Gio.ia
+================================================================================
+
+Apri Git Bash nella directory Control-panel-admin ed esegui questi comandi:
+
+1. INIZIALIZZA REPOSITORY
+   git init
+   git branch -M main
+
+2. AGGIUNGI REMOTE GITHUB
+   git remote add origin https://github.com/gioiasoftware-pixel/Control_Panel_Admin_Gio.ia.git
+
+3. VERIFICA STATO
+   git status
+
+4. AGGIUNGI TUTTI I FILE
+   git add .
+
+5. CREA COMMIT
+   git commit -m "Initial commit: Control Panel Admin v1.0.0"
+
+6. PUSH SU GITHUB
+   git push -u origin main
+
+================================================================================
+OPPURE USA LO SCRIPT AUTOMATICO:
+
+   chmod +x git-push.sh
+   ./git-push.sh
+
+================================================================================
+NOTA: Se GitHub richiede autenticazione:
+- Usa Personal Access Token invece della password
+- Crea token su: GitHub → Settings → Developer settings → Personal access tokens
+- Permessi necessari: repo (full control)
+================================================================================
