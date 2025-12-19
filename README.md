@@ -173,10 +173,16 @@ Ogni utente ha **SEMPRE** 5 tabelle create al momento onboarding:
 
 ### Variabili Ambiente
 
+**⚠️ IMPORTANTE**: Vedi `RAILWAY_ENV_SETUP.md` per istruzioni dettagliate su come configurare le variabili ambiente su Railway.
+
 **Obbligatorie**:
-- `PROCESSOR_URL`: URL Processor microservice
-- `DATABASE_URL`: PostgreSQL connection string
-- `JWT_SECRET`: Secret per JWT tokens
+- `VITE_API_URL`: URL backend Web App (es: `https://gioia-web-app-production.up.railway.app`)
+- `VITE_PROCESSOR_URL`: URL Processor microservice (es: `https://gioia-processor-production.up.railway.app`)
+
+**Opzionali**:
+- `VITE_ADMIN_EMAIL`: Email admin (solo per sviluppo/test)
+- `VITE_ADMIN_PASSWORD`: Password admin (solo per sviluppo/test)
+- `VITE_NODE_ENV`: Environment (default: `production`)
 
 **Opzionali**:
 - `WEB_APP_URL`: URL Web App backend (se integrato)
