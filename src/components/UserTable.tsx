@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiClient } from '../services/api'
-import { TableRow } from '../types'
+import { TableRow, TableType } from '../types'
 import toast from 'react-hot-toast'
 
 interface UserTableProps {
