@@ -35,7 +35,7 @@ const TABLE_CONFIGS: Record<TableType, { name: string; editable: boolean }> = {
 type TabType = TableType | 'user'
 
 // Funzione helper per formattare il tempo in secondi
-function formatTime(seconds: number): string {
+const formatTime = (seconds: number): string => {
   if (seconds < 60) {
     return `${seconds}s`
   } else if (seconds < 3600) {
@@ -186,6 +186,42 @@ export default function UserDetail() {
                 : 'Mai'}
             </p>
             <p className="text-xs text-gray-400 mt-1">Clicca per vedere tutti i dati</p>
+          </div>
+        </div>
+      )}
+
+      {/* Tempo in App */}
+      {user.stats && (user.stats.time_today_seconds !== undefined || user.stats.time_total_seconds !== undefined) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-4 rounded-lg shadow">
+            <p className="text-sm text-gray-500 mb-2">Tempo in App Oggi</p>
+            {user.stats.time_today_seconds !== undefined && user.stats.time_today_seconds !== null && user.stats.time_today_seconds > 0 ? (
+              <div>
+                <p className="text-lg font-bold text-gray-900">
+                  {formatTime(user.stats.time_today_seconds)}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {user.stats.time_today_seconds} secondi
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">Nessuna attività oggi</p>
+            )}
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow">
+            <p className="text-sm text-gray-500 mb-2">Tempo Totale in App</p>
+            {user.stats.time_total_seconds !== undefined && user.stats.time_total_seconds !== null && user.stats.time_total_seconds > 0 ? (
+              <div>
+                <p className="text-lg font-bold text-gray-900">
+                  {formatTime(user.stats.time_total_seconds)}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {user.stats.time_total_seconds} secondi totali
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">Nessuna attività registrata</p>
+            )}
           </div>
         </div>
       )}
