@@ -110,8 +110,12 @@ export default function UserDetail() {
                 const { redirect_url } = await apiClient.getSpectatorToken(Number(userId))
                 // Salva URL control panel per tornare indietro
                 localStorage.setItem('control_panel_url', window.location.href)
-                // Reindirizza alla web app con token spectator
-                window.location.href = redirect_url
+                // Verifica che redirect_url sia un URL completo (con protocollo)
+                const fullUrl = redirect_url.startsWith('http://') || redirect_url.startsWith('https://')
+                  ? redirect_url
+                  : `https://${redirect_url}`
+                // Reindirizza alla web app con token spectator (usa window.location.replace per evitare di tornare indietro)
+                window.location.replace(fullUrl)
               } catch (error: any) {
                 toast.error(error.message || 'Errore durante l\'accesso in spectator mode')
               }
