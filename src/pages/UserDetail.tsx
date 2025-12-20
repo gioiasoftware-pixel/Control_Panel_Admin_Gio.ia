@@ -37,6 +37,7 @@ export default function UserDetail() {
   const { userId } = useParams<{ userId: string }>()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<TabType>('user')
+  const [showUserDataModal, setShowUserDataModal] = useState(false)
 
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ['user', userId],
@@ -175,6 +176,14 @@ export default function UserDetail() {
           )}
         </div>
       </div>
+
+      {/* Modal Dati Utente Completi */}
+      {showUserDataModal && (
+        <UserDataModal
+          user={user}
+          onClose={() => setShowUserDataModal(false)}
+        />
+      )}
     </div>
   )
 }

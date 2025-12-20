@@ -20,6 +20,12 @@ export interface UserStats {
   last_activity: string | null
   processing_jobs: number
   errors_count: number
+  // Ultimo job processing
+  last_job_message?: string | null
+  last_job_date?: string | null
+  // Ultimo errore
+  last_error?: string | null
+  last_error_date?: string | null
 }
 
 export interface UserWithStats extends User {
