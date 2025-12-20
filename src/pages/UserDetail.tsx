@@ -5,6 +5,7 @@ import { apiClient } from '../services/api'
 import { TableType } from '../types'
 import UserTable from '../components/UserTable'
 import UserEditForm from '../components/UserEditForm'
+import UserDataModal from '../components/UserDataModal'
 // Simple arrow icon component
 const ArrowLeft = ({ className }: { className?: string }) => (
   <svg
@@ -106,20 +107,66 @@ export default function UserDetail() {
             <p className="text-2xl font-bold text-gray-900">{user.stats.total_wines}</p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow">
-            <p className="text-sm text-gray-500">Job Processing</p>
-            <p className="text-2xl font-bold text-gray-900">{user.stats.processing_jobs}</p>
+            <p className="text-sm text-gray-500 mb-2">Job Processing</p>
+            {user.stats.last_job_message && user.stats.last_job_date ? (
+              <div>
+                <p className="text-sm font-medium text-gray-900 truncate" title={user.stats.last_job_message}>
+                  {user.stats.last_job_message}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {new Date(user.stats.last_job_date).toLocaleDateString('it-IT', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">Nessun job</p>
+            )}
           </div>
           <div className="bg-white p-4 rounded-lg shadow">
-            <p className="text-sm text-gray-500">Errori</p>
-            <p className="text-2xl font-bold text-red-600">{user.stats.errors_count}</p>
+            <p className="text-sm text-gray-500 mb-2">Errori</p>
+            {user.stats.last_error && user.stats.last_error_date ? (
+              <div>
+                <p className="text-sm font-medium text-red-600 truncate" title={user.stats.last_error}>
+                  {user.stats.last_error.length > 50 
+                    ? user.stats.last_error.substring(0, 50) + '...'
+                    : user.stats.last_error}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {new Date(user.stats.last_error_date).toLocaleDateString('it-IT', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">Nessun errore</p>
+            )}
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <p className="text-sm text-gray-500">Ultimo Accesso</p>
-            <p className="text-sm font-medium text-gray-900">
+          <div 
+            className="bg-white p-4 rounded-lg shadow cursor-pointer hover:bg-gray-50 transition"
+            onClick={() => setShowUserDataModal(true)}
+          >
+            <p className="text-sm text-gray-500 mb-2">Ultimo Accesso</p>
+            <p className="text-sm font-medium text-primary-600 hover:text-primary-700">
               {user.stats.last_activity
-                ? new Date(user.stats.last_activity).toLocaleDateString('it-IT')
+                ? new Date(user.stats.last_activity).toLocaleDateString('it-IT', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })
                 : 'Mai'}
             </p>
+            <p className="text-xs text-gray-400 mt-1">Clicca per vedere tutti i dati</p>
           </div>
         </div>
       )}

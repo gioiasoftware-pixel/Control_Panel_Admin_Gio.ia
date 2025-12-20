@@ -17,6 +17,9 @@ export interface User {
 
 export interface UserStats {
   total_wines: number
+  total_logs?: number
+  total_consumi?: number
+  total_storico?: number
   last_activity: string | null
   processing_jobs: number
   errors_count: number
