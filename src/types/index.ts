@@ -29,6 +29,9 @@ export interface UserStats {
   // Ultimo errore
   last_error?: string | null
   last_error_date?: string | null
+  // Tempo passato in app
+  time_today_seconds?: number | null  // secondi passati in app oggi
+  time_total_seconds?: number | null  // secondi totali passati in app
 }
 
 export interface UserWithStats extends User {

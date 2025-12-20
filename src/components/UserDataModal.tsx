@@ -232,6 +232,26 @@ Statistiche:
                     </p>
                   )}
                 </div>
+                {user.stats.time_today_seconds !== undefined && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Tempo in App Oggi</label>
+                    <p className="text-sm text-gray-900 bg-gray-50 p-2 rounded">
+                      {user.stats.time_today_seconds > 0 
+                        ? formatTime(user.stats.time_today_seconds)
+                        : 'Nessuna attività oggi'}
+                    </p>
+                  </div>
+                )}
+                {user.stats.time_total_seconds !== undefined && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Tempo Totale in App</label>
+                    <p className="text-sm text-gray-900 bg-gray-50 p-2 rounded">
+                      {user.stats.time_total_seconds > 0
+                        ? formatTime(user.stats.time_total_seconds)
+                        : 'Nessuna attività registrata'}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -239,4 +259,23 @@ Statistiche:
       </div>
     </div>
   )
+}
+
+// Funzione helper per formattare il tempo in secondi
+function formatTime(seconds: number): string {
+  if (seconds < 60) {
+    return `${seconds}s`
+  } else if (seconds < 3600) {
+    const minutes = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${minutes}m ${secs}s`
+  } else {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+    const secs = seconds % 60
+    if (minutes === 0) {
+      return `${hours}h ${secs}s`
+    }
+    return `${hours}h ${minutes}m ${secs}s`
+  }
 }

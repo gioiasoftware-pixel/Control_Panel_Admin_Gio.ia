@@ -34,6 +34,25 @@ const TABLE_CONFIGS: Record<TableType, { name: string; editable: boolean }> = {
 
 type TabType = TableType | 'user'
 
+// Funzione helper per formattare il tempo in secondi
+function formatTime(seconds: number): string {
+  if (seconds < 60) {
+    return `${seconds}s`
+  } else if (seconds < 3600) {
+    const minutes = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${minutes}m ${secs}s`
+  } else {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+    const secs = seconds % 60
+    if (minutes === 0) {
+      return `${hours}h ${secs}s`
+    }
+    return `${hours}h ${minutes}m ${secs}s`
+  }
+}
+
 export default function UserDetail() {
   const { userId } = useParams<{ userId: string }>()
   const navigate = useNavigate()
@@ -101,7 +120,7 @@ export default function UserDetail() {
 
       {/* Stats */}
       {user.stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white p-4 rounded-lg shadow">
             <p className="text-sm text-gray-500">Vini Totali</p>
             <p className="text-2xl font-bold text-gray-900">{user.stats.total_wines}</p>
