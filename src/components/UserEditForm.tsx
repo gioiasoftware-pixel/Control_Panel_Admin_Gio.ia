@@ -298,7 +298,9 @@ export default function UserEditForm({ user, userId }: UserEditFormProps) {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Creato il</label>
           <p className="text-sm text-gray-500 bg-gray-50 p-2 rounded">
-            {new Date(user.created_at).toLocaleDateString('it-IT')}
+            {user.created_at 
+              ? new Date(user.created_at).toLocaleDateString('it-IT')
+              : 'N/A'}
           </p>
           <p className="text-xs text-gray-400 mt-1">Non modificabile</p>
         </div>
@@ -306,3 +308,4 @@ export default function UserEditForm({ user, userId }: UserEditFormProps) {
     </form>
   )
 }
+
