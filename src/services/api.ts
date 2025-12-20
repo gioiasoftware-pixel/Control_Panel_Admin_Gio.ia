@@ -169,6 +169,11 @@ class ApiClient {
     return response.data
   }
 
+  async getSpectatorToken(userId: number): Promise<{ spectator_token: string; web_app_url: string; redirect_url: string }> {
+    const response = await this.client.post(`/api/admin/users/${userId}/spectator-token`)
+    return response.data
+  }
+
   // Dashboard KPI
   async getDashboardKPI(): Promise<DashboardKPI> {
     const response = await this.client.get('/api/admin/dashboard/kpi')

@@ -6,6 +6,7 @@ import { TableType } from '../types'
 import UserTable from '../components/UserTable'
 import UserEditForm from '../components/UserEditForm'
 import UserDataModal from '../components/UserDataModal'
+import toast from 'react-hot-toast'
 // Simple arrow icon component
 const ArrowLeft = ({ className }: { className?: string }) => (
   <svg
@@ -103,11 +104,24 @@ export default function UserDetail() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="px-3 py-1 text-sm font-semibold text-primary-700 bg-primary-100 rounded">
+          <button
+            onClick={async () => {
+              try {
+                const { redirect_url } = await apiClient.getSpectatorToken(Number(userId))
+                // Salva URL control panel per tornare indietro
+                localStorage.setItem('control_panel_url', window.location.href)
+                // Reindirizza alla web app con token spectator
+                window.location.href = redirect_url
+              } catch (error: any) {
+                toast.error(error.message || 'Errore durante l\'accesso in spectator mode')
+              }
+            }}
+            className="px-4 py-2 text-sm font-semibold text-white bg-primary-600 rounded-md hover:bg-primary-700 transition"
+          >
             Spectator Mode
-          </span>
+          </button>
           <span className="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded">
-            Viewing as: {user.username}
+            Viewing as: {user.username || user.business_name}
           </span>
           <button
             onClick={() => navigate(`/admin/users/${userId}/edit`)}
