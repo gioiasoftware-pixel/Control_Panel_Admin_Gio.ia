@@ -20,17 +20,25 @@ export default function Login() {
 
     try {
       // Try API login first
+      console.log('[LOGIN] Tentativo login per:', email)
       const response = await apiClient.login(email, password)
+      console.log('[LOGIN] Risposta ricevuta:', response)
       const token = response.access_token || response.token
       
       if (!token) {
+        console.error('[LOGIN] Token non ricevuto, response:', response)
         throw new Error('Token non ricevuto dal server')
       }
       
+      console.log('[LOGIN] Token ricevuto, salvando...')
       setToken(token)
       toast.success('Login effettuato con successo')
       navigate('/admin/dashboard')
     } catch (error: any) {
+      console.error('[LOGIN] Errore durante login:', error)
+      console.error('[LOGIN] Error response:', error.response)
+      console.error('[LOGIN] Error message:', error.message)
+      
       // In produzione, non usare fallback mock - mostra errore reale
       if (import.meta.env.PROD) {
         const errorMessage = error.response?.data?.detail || error.message || 'Errore durante il login'
@@ -39,10 +47,12 @@ export default function Login() {
       } else {
         // Solo in sviluppo, prova fallback mock
         try {
+          console.log('[LOGIN] Tentativo fallback mock login...')
           await login(email, password)
           toast.success('Login effettuato con successo (modalità sviluppo)')
           navigate('/admin/dashboard')
         } catch (mockError: any) {
+          console.error('[LOGIN] Errore anche nel fallback mock:', mockError)
           const errorMessage = error.response?.data?.detail || error.message || 'Errore durante il login'
           setError(errorMessage)
           toast.error(errorMessage)

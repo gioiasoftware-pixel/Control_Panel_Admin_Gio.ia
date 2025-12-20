@@ -83,16 +83,26 @@ class ApiClient {
 
   // Auth
   async login(email: string, password: string): Promise<{ access_token: string; token?: string }> {
-    const response = await this.client.post('/api/auth/login', {
-      email,
-      password,
-    })
-    // Normalize response: API returns access_token, but we also support token for compatibility
-    const data = response.data
-    if (data.access_token) {
-      return { access_token: data.access_token, token: data.access_token }
+    try {
+      console.log('[API] Login request to:', `${API_URL}/api/auth/login`)
+      const response = await this.client.post('/api/auth/login', {
+        email,
+        password,
+      })
+      console.log('[API] Login response status:', response.status)
+      console.log('[API] Login response data:', response.data)
+      // Normalize response: API returns access_token, but we also support token for compatibility
+      const data = response.data
+      if (data.access_token) {
+        return { access_token: data.access_token, token: data.access_token }
+      }
+      return data
+    } catch (error: any) {
+      console.error('[API] Login error:', error)
+      console.error('[API] Login error response:', error.response)
+      console.error('[API] Login error message:', error.message)
+      throw error
     }
-    return data
   }
 
   // Users
