@@ -107,7 +107,30 @@ class ApiClient {
 
   async getUser(userId: number): Promise<UserWithStats> {
     const response = await this.client.get(`/api/admin/users/${userId}`)
-    return response.data
+    // Il backend restituisce {user: {...}, stats: {...}}, dobbiamo combinare
+    const data = response.data
+    
+    // Debug logging
+    console.log('[API] getUser response:', JSON.stringify(data, null, 2))
+    
+    if (data.user && data.stats) {
+      const combined = {
+        ...data.user,
+        stats: data.stats
+      }
+      console.log('[API] Combined user data:', JSON.stringify(combined, null, 2))
+      return combined
+    }
+    
+    // Se la struttura è già corretta (stats direttamente nell'oggetto)
+    if (data.stats && data.id) {
+      console.log('[API] User data already in correct format')
+      return data as UserWithStats
+    }
+    
+    // Fallback per compatibilità
+    console.warn('[API] Unexpected response structure:', data)
+    return data
   }
 
   async createUser(data: OnboardingData): Promise<OnboardingResponse> {

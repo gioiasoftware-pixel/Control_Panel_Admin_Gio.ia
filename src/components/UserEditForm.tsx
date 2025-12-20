@@ -11,6 +11,10 @@ interface UserEditFormProps {
 
 export default function UserEditForm({ user, userId }: UserEditFormProps) {
   const queryClient = useQueryClient()
+  
+  // Debug logging
+  console.log('[UserEditForm] Received user data:', JSON.stringify(user, null, 2))
+  
   const [formData, setFormData] = useState({
     email: user.email || '',
     username: user.username || '',
