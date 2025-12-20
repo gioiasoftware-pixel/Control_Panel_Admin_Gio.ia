@@ -232,7 +232,7 @@ Statistiche:
                     </p>
                   )}
                 </div>
-                {user.stats.time_today_seconds !== undefined && (
+                {user.stats.time_today_seconds !== undefined && user.stats.time_today_seconds !== null && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Tempo in App Oggi</label>
                     <p className="text-sm text-gray-900 bg-gray-50 p-2 rounded">
@@ -242,7 +242,7 @@ Statistiche:
                     </p>
                   </div>
                 )}
-                {user.stats.time_total_seconds !== undefined && (
+                {user.stats.time_total_seconds !== undefined && user.stats.time_total_seconds !== null && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Tempo Totale in App</label>
                     <p className="text-sm text-gray-900 bg-gray-50 p-2 rounded">
