@@ -33,8 +33,40 @@ export default function Dashboard() {
     },
   })
 
+  const { mutate: generatePdfReports, isPending: isGeneratingPdf } = useMutation({
+    mutationFn: () => apiClient.triggerGeneratePdfReports(),
+    onSuccess: (data) => {
+      toast.success(data.message || 'PDF report generati con successo')
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.detail || error.message || 'Errore durante la generazione PDF')
+    },
+  })
+
+  const { mutate: sendPdfReports, isPending: isSendingPdf } = useMutation({
+    mutationFn: () => apiClient.triggerSendPdfReports(),
+    onSuccess: (data) => {
+      toast.success(data.message || 'PDF report inviati con successo')
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.detail || error.message || 'Errore durante l\'invio PDF')
+    },
+  })
+
   const handleUserClick = (userId: number) => {
     navigate(`/admin/users/${userId}`)
+  }
+
+  const handleGeneratePdfReports = () => {
+    if (confirm('Generare PDF report per tutti gli utenti (giorno precedente)?')) {
+      generatePdfReports()
+    }
+  }
+
+  const handleSendPdfReports = () => {
+    if (confirm('Inviare PDF report nelle notifiche per tutti gli utenti (giorno precedente)?')) {
+      sendPdfReports()
+    }
   }
 
   return (
@@ -44,12 +76,30 @@ export default function Dashboard() {
           <h1>Dashboard Admin</h1>
           <p>Gestisci utenti e monitora il sistema</p>
         </div>
-        <button
-          onClick={() => setShowOnboarding(true)}
-          className="dashboard-button"
-        >
-          + Nuovo Utente
-        </button>
+        <div className="dashboard-actions">
+          <button
+            onClick={handleGeneratePdfReports}
+            className="dashboard-button-secondary"
+            disabled={isGeneratingPdf}
+            title="Genera PDF report per tutti gli utenti (giorno precedente)"
+          >
+            {isGeneratingPdf ? 'Generazione...' : '📄 Genera PDF Report'}
+          </button>
+          <button
+            onClick={handleSendPdfReports}
+            className="dashboard-button-secondary"
+            disabled={isSendingPdf}
+            title="Invia PDF report nelle notifiche per tutti gli utenti (giorno precedente)"
+          >
+            {isSendingPdf ? 'Invio...' : '📤 Invia PDF Report'}
+          </button>
+          <button
+            onClick={() => setShowOnboarding(true)}
+            className="dashboard-button"
+          >
+            + Nuovo Utente
+          </button>
+        </div>
       </div>
 
       {/* Search */}

@@ -285,6 +285,29 @@ class ApiClient {
     })
     return response.data
   }
+
+  // PDF Reports
+  async triggerGeneratePdfReports(userId?: number, reportDate?: string): Promise<any> {
+    const formData = new FormData()
+    if (userId) formData.append('user_id', userId.toString())
+    if (reportDate) formData.append('report_date', reportDate)
+    
+    const response = await this.processorClient.post('/admin/trigger-generate-pdf-reports', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  }
+
+  async triggerSendPdfReports(userId?: number, reportDate?: string): Promise<any> {
+    const params: any = {}
+    if (userId) params.user_id = userId
+    if (reportDate) params.report_date = reportDate
+    
+    const response = await this.client.post('/api/admin/trigger-send-pdf-reports', null, { params })
+    return response.data
+  }
 }
 
 export const apiClient = new ApiClient()

@@ -84,7 +84,7 @@ Il **Dev Control Panel Admin** è un'applicazione interna, separata dalla web ap
 ### Route Nested (User Dashboard)
 
 ```
-/admin/users/:userId
+/admin/users/:userId  
   ├── /                    # Overview utente
   ├── /inventario          # Tab 1: INVENTARIO
   ├── /backup              # Tab 2: INVENTARIO backup

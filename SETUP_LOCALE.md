@@ -1,3 +1,4 @@
+
 # 🛠️ Setup Locale - Control Panel Admin
 
 Guida per configurare e avviare il progetto in locale.
@@ -140,3 +141,5 @@ Dopo setup locale, vedi `DEPLOY_TODO.md` per:
 - Deploy su Railway
 - Integrazione con altri servizi
 - Configurazione produzione
+
+

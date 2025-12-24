@@ -118,3 +118,5 @@ CONTROL_PANEL_URL = os.getenv("CONTROL_PANEL_URL", "")
 ---
 
 **Nota**: Il Control Panel funziona già senza questa variabile negli altri servizi, ma averla disponibile facilita future integrazioni e link nelle notifiche.
+
+

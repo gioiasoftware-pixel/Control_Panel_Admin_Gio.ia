@@ -154,3 +154,5 @@ Dovresti vedere gli URL corretti nella console del browser.
 
 **Data**: 2025-01-XX  
 **Versione**: 1.0.0
+
+
