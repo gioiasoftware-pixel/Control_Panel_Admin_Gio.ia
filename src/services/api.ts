@@ -14,6 +14,37 @@ import type {
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 const PROCESSOR_URL = import.meta.env.VITE_PROCESSOR_URL || 'http://localhost:8001'
 
+function safeDecodeJwt(token: string) {
+  try {
+    const parts = token.split('.')
+    if (parts.length < 2) return null
+    const payload = JSON.parse(atob(parts[1]))
+    return payload
+  } catch {
+    return null
+  }
+}
+
+function logAuthDebug(context: string, token: string | null, requestUrl?: string) {
+  const payload = token ? safeDecodeJwt(token) : null
+  const exp = payload?.exp ? new Date(payload.exp * 1000) : null
+  const now = new Date()
+  const expInMin = exp ? Math.round((exp.getTime() - now.getTime()) / 60000) : null
+  console.warn('[ADMIN_AUTH_DEBUG]', {
+    context,
+    requestUrl,
+    apiBaseUrl: API_URL,
+    hasToken: !!token,
+    tokenPayload: payload ? {
+      user_id: payload.user_id,
+      type: payload.type,
+      is_spectator: payload.is_spectator,
+      exp: payload.exp
+    } : null,
+    tokenExpiresInMin: expInMin
+  })
+}
+
 // Warn if using default URLs in production
 if (import.meta.env.PROD) {
   if (!import.meta.env.VITE_API_URL) {
@@ -76,6 +107,11 @@ class ApiClient {
           localStorage.removeItem('auth_token')
           window.location.href = '/admin/login'
         }
+        if (error.response?.status === 403) {
+          const token = localStorage.getItem('auth_token')
+          const requestUrl = (error.config?.baseURL || '') + (error.config?.url || '')
+          logAuthDebug('403 forbidden', token, requestUrl)
+        }
         return Promise.reject(error)
       }
     )
@@ -94,6 +130,7 @@ class ApiClient {
       // Normalize response: API returns access_token, but we also support token for compatibility
       const data = response.data
       if (data.access_token) {
+        logAuthDebug('login success', data.access_token)
         return { access_token: data.access_token, token: data.access_token }
       }
       return data
