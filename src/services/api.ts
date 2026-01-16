@@ -45,6 +45,24 @@ function logAuthDebug(context: string, token: string | null, requestUrl?: string
   })
 }
 
+function getStoredToken(): string | null {
+  const directToken = localStorage.getItem('auth_token')
+  if (directToken) return directToken
+  try {
+    const raw = localStorage.getItem('auth-storage')
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    const token = parsed?.state?.token
+    if (token) {
+      localStorage.setItem('auth_token', token)
+      return token
+    }
+  } catch {
+    return null
+  }
+  return null
+}
+
 // Warn if using default URLs in production
 if (import.meta.env.PROD) {
   if (!import.meta.env.VITE_API_URL) {
@@ -79,7 +97,7 @@ class ApiClient {
 
     // Add auth token to requests
     this.client.interceptors.request.use((config) => {
-      const token = localStorage.getItem('auth_token')
+      const token = getStoredToken()
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
@@ -108,7 +126,7 @@ class ApiClient {
           window.location.href = '/admin/login'
         }
         if (error.response?.status === 403) {
-          const token = localStorage.getItem('auth_token')
+          const token = getStoredToken()
           const requestUrl = (error.config?.baseURL || '') + (error.config?.url || '')
           logAuthDebug('403 forbidden', token, requestUrl)
         }
