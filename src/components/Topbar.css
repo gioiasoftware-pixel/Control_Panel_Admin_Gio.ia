@@ -46,6 +46,30 @@
   gap: 16px;
 }
 
+.topbar-debug-toggle {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-white);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.topbar-debug-toggle.is-on {
+  background-color: #16a34a;
+}
+
+.topbar-debug-toggle.is-off {
+  background-color: #dc2626;
+}
+
+.topbar-debug-toggle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .topbar-email {
   font-size: 14px;
   color: var(--color-text-secondary);

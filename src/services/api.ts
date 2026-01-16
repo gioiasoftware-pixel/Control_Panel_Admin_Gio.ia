@@ -308,6 +308,16 @@ class ApiClient {
     const response = await this.client.post('/api/admin/trigger-send-pdf-reports', null, { params })
     return response.data
   }
+
+  async getDebugLoggingStatus(): Promise<{ enabled: boolean }> {
+    const response = await this.client.get('/api/admin/debug-logging')
+    return response.data
+  }
+
+  async setDebugLoggingStatus(enabled: boolean): Promise<{ enabled: boolean }> {
+    const response = await this.client.put('/api/admin/debug-logging', { enabled })
+    return response.data
+  }
 }
 
 export const apiClient = new ApiClient()
