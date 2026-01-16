@@ -20,7 +20,11 @@ const queryClient = new QueryClient({
 })
 
 function App() {
-  const { isAuthenticated } = useAuthStore()
+  const { isAuthenticated, hasHydrated } = useAuthStore()
+
+  if (!hasHydrated) {
+    return null
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

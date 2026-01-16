@@ -7,7 +7,11 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated } = useAuthStore()
+  const { isAuthenticated, hasHydrated } = useAuthStore()
+
+  if (!hasHydrated) {
+    return null
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace />

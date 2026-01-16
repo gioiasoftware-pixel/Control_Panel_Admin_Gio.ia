@@ -6,6 +6,7 @@ interface AuthState {
   token: string | null
   isAuthenticated: boolean
   adminEmail: string | null
+  hasHydrated: boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => void
   setToken: (token: string) => void
@@ -17,6 +18,7 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       isAuthenticated: false,
       adminEmail: null,
+      hasHydrated: false,
       login: async (email: string, password: string) => {
         // In produzione, usa solo API reale
         if (import.meta.env.PROD) {
@@ -90,6 +92,9 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => () => {
+        set({ hasHydrated: true })
+      },
     }
   )
 )
