@@ -20,7 +20,16 @@ const queryClient = new QueryClient({
 })
 
 function App() {
-  const { isAuthenticated, hasHydrated } = useAuthStore()
+  const { isAuthenticated, hasHydrated, setToken } = useAuthStore()
+
+  const url = new URL(window.location.href)
+  const tokenFromUrl = url.searchParams.get('token') || url.searchParams.get('access_token')
+  if (tokenFromUrl) {
+    setToken(tokenFromUrl)
+    url.searchParams.delete('token')
+    url.searchParams.delete('access_token')
+    window.history.replaceState({}, '', url.toString())
+  }
 
   if (!hasHydrated) {
     return null
