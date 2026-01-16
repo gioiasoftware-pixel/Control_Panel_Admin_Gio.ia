@@ -12,9 +12,13 @@ interface AuthState {
   setToken: (token: string) => void
 }
 
+let setRef: ((partial: Partial<AuthState>) => void) | null = null
+
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set) => {
+      setRef = set
+      return ({
       token: null,
       isAuthenticated: false,
       adminEmail: null,
@@ -88,12 +92,13 @@ export const useAuthStore = create<AuthState>()(
           adminEmail: import.meta.env.VITE_ADMIN_EMAIL || 'gio.ia.software@gmail.com',
         })
       },
-    }),
+    })
+    },
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
       onRehydrateStorage: () => () => {
-        set({ hasHydrated: true })
+        setRef?.({ hasHydrated: true })
       },
     }
   )
